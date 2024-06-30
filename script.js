@@ -94,7 +94,11 @@ addCustomCakeButton.addEventListener('click', () => {
 // Função para abrir o modal do produto
 function openProductModal(name, price) {
     const isCake = name.toLowerCase().includes('bolo');
-    const isSweet = !isCake && (name.toLowerCase().includes('doce') || name.toLowerCase().includes('bolacha'));
+    const isSweet = !isCake && (name.toLowerCase().includes('doce') || 
+                                name.toLowerCase().includes('bolacha') || 
+                                name.toLowerCase().includes('brigadeiro') || 
+                                name.toLowerCase().includes('beijinho') ||
+                                name.toLowerCase().includes('cookie'));
     
     const modal = document.createElement('div');
     modal.className = 'fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50';
@@ -202,6 +206,7 @@ function openProductModal(name, price) {
 
     updateTotal(); // Initial update
 }
+
 
 
 
