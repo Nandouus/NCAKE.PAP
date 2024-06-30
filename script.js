@@ -286,18 +286,28 @@ function updateCartModal() {
 
 //funcao para remover o item do carrinho
 cartItemsContainer.addEventListener("click", function(event) {
-    const name = event.target.getAttribute("data-name");
-    const description = event.target.getAttribute("data-description");
-    const weight = parseFloat(event.target.getAttribute("data-weight"));
-    if (event.target.classList.contains("remove-from-cart-btn")) {
-        removeItemCart(name, description, weight);
-    } else if (event.target.classList.contains("decrease-quantity-btn")) {
-        decreaseItemQuantity(name, description, weight);
+    if (event.target.classList.contains("remove-from-cart-btn") || 
+        event.target.classList.contains("decrease-quantity-btn")) {
+        const name = event.target.getAttribute("data-name");
+        const description = event.target.getAttribute("data-description") || null;
+        const weight = event.target.getAttribute("data-weight") ? parseFloat(event.target.getAttribute("data-weight")) : null;
+        const oldPrice = event.target.getAttribute("data-old-price") ? parseFloat(event.target.getAttribute("data-old-price")) : undefined;
+        
+        if (event.target.classList.contains("remove-from-cart-btn")) {
+            removeItemCart(name, description, weight, oldPrice);
+        } else if (event.target.classList.contains("decrease-quantity-btn")) {
+            decreaseItemQuantity(name, description, weight, oldPrice);
+        }
     }
 });
 
-function decreaseItemQuantity(name, description, weight) {
-    const index = cart.findIndex(item => item.name === name && item.description === description && item.weight === weight);
+function decreaseItemQuantity(name, description, weight, oldPrice) {
+    const index = cart.findIndex(item => 
+        item.name === name && 
+        (description ? item.description === description : true) && 
+        (weight ? Math.abs(item.weight - weight) < 0.001 : true) &&
+        (oldPrice !== undefined ? Math.abs(item.oldPrice - oldPrice) < 0.001 : true)
+    );
 
     if (index !== -1) {
         if (cart[index].quantity > 1) {
@@ -312,8 +322,14 @@ function decreaseItemQuantity(name, description, weight) {
     }
 }
 
-function removeItemCart(name, description, weight) {
-    const index = cart.findIndex(item => item.name === name && item.description === description && item.weight === weight);
+
+function removeItemCart(name, description, weight, oldPrice) {
+    const index = cart.findIndex(item => 
+        item.name === name && 
+        (description ? item.description === description : true) && 
+        (weight ? Math.abs(item.weight - weight) < 0.001 : true) &&
+        (oldPrice !== undefined ? Math.abs(item.oldPrice - oldPrice) < 0.001 : true)
+    );
 
     if (index !== -1) {
         cart.splice(index, 1);
