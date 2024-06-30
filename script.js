@@ -207,11 +207,17 @@ function openProductModal(name, price) {
 
 
 
-//funcao para adicionar ao carrinho
 function addToCart(name, price, quantity, weight, oldPrice, description = '') {
-    const existingItem = cart.find(item => item.name === name && item.weight === weight && item.description === description);
+    const isCustomCake = name === 'Bolo Personalizado';
+    const imagePath = isCustomCake ? './assets/custom-cake.jpg' : `./assets/${name.toLowerCase().replace(/ /g, '-')}.jpg`;
 
-    if (existingItem && !oldPrice) {
+    const existingItem = cart.find(item => 
+        item.name === name && 
+        item.weight === weight && 
+        item.description === description
+    );
+
+    if (existingItem && !isCustomCake) {
         existingItem.quantity += quantity;
         existingItem.price += price;
     } else {
@@ -222,7 +228,7 @@ function addToCart(name, price, quantity, weight, oldPrice, description = '') {
             weight,
             oldPrice,
             description,
-            image: `./assets/${name.toLowerCase().replace(/ /g, '-')}.jpg`
+            image: imagePath
         });
     }
 
@@ -230,7 +236,8 @@ function addToCart(name, price, quantity, weight, oldPrice, description = '') {
 }
 
 
-// Função para atualizar o carrinho
+
+
 function updateCartModal() {
     cartItemsContainer.innerHTML = "";
     let total = 0;
@@ -242,7 +249,7 @@ function updateCartModal() {
         cartItemElement.innerHTML = `
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                    <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded mr-4">
+                    <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded mr-4" onerror="this.src='./assets/personalizado.jpg'">
                     <div>
                         <p class="font-medium">${item.name}</p>
                         ${item.description ? `<p class="text-sm text-gray-600">${item.description}</p>` : ''}
@@ -279,6 +286,7 @@ function updateCartModal() {
 
     cartCounter.textContent = cart.reduce((total, item) => total + item.quantity, 0);
 }
+
 
 
 
