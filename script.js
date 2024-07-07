@@ -16,13 +16,13 @@ const customCakeDescription = document.getElementById('custom-cake-description')
 
 let cart = [];
 
-// Abrir o Modal do carrinho
+
 cartBtn.addEventListener("click", function() {
     updateCartModal();
     cartModal.style.display = "flex"
 })
 
-// Fechar o Modal do carrinho
+
 cartModal.addEventListener("click", function(event){
     if(event.target === cartModal){
         cartModal.style.display = "none"
@@ -44,19 +44,19 @@ menu.addEventListener("click", function(event){
     }
 })
 
-// Abrir o modal de bolo personalizado
+
 openCustomModalButtons.forEach(button => {
     button.addEventListener('click', () => {
         customCakeModal.style.display = 'flex';
     });
 });
 
-// Fechar o modal de bolo personalizado
+
 closeCustomModalButton.addEventListener('click', () => {
     customCakeModal.style.display = 'none';
 });
 
-// Adicionar bolo personalizado ao carrinho
+
 addCustomCakeButton.addEventListener('click', () => {
     const description = customCakeDescription.value.trim();
     if (description) {
@@ -91,7 +91,6 @@ addCustomCakeButton.addEventListener('click', () => {
 });
 
 
-// Função para abrir o modal do produto
 function openProductModal(name, price) {
     const isCake = name.toLowerCase().includes('bolo');
     const isSweet = !isCake && (name.toLowerCase().includes('doce') || 
@@ -158,7 +157,7 @@ function openProductModal(name, price) {
     
         if (isSweet && promoQuantity) {
             oldPrice = total;
-            total *= 0.9; // 10% discount
+            total *= 0.9; 
             oldPriceSpan.textContent = oldPrice.toFixed(2) + '€ ';
             oldPriceSpan.classList.remove('hidden');
             oldPriceSpan.style.textDecoration = 'line-through';
@@ -204,12 +203,8 @@ function openProductModal(name, price) {
         document.body.removeChild(modal);
     });
 
-    updateTotal(); // Initial update
+    updateTotal(); 
 }
-
-
-
-
 
 
 function addToCart(name, price, quantity, weight, oldPrice, description = '') {
@@ -239,8 +234,6 @@ function addToCart(name, price, quantity, weight, oldPrice, description = '') {
 
     updateCartModal();
 }
-
-
 
 
 function updateCartModal() {
@@ -293,11 +286,6 @@ function updateCartModal() {
 }
 
 
-
-
-
-
-//funcao para remover o item do carrinho
 cartItemsContainer.addEventListener("click", function(event) {
     if (event.target.classList.contains("remove-from-cart-btn") || 
         event.target.classList.contains("decrease-quantity-btn")) {
@@ -313,6 +301,7 @@ cartItemsContainer.addEventListener("click", function(event) {
         }
     }
 });
+
 
 function decreaseItemQuantity(name, description, weight, oldPrice) {
     const index = cart.findIndex(item => 
@@ -350,6 +339,7 @@ function removeItemCart(name, description, weight, oldPrice) {
     }
 }
 
+
 addressInput.addEventListener("input", function(event){
     let inputValue = event.target.value;
 
@@ -359,7 +349,6 @@ addressInput.addEventListener("input", function(event){
     }
 })
 
-//Finalizar pedido
 checkoutBtn.addEventListener("click", function(){
     const isOpen = checkRestaurantOpen();
     if(!isOpen){
@@ -384,7 +373,6 @@ checkoutBtn.addEventListener("click", function(){
         return;
     }
 
-    // Preparar a mensagem do pedido
     const cartItems = cart.map((item, index) => {
         return `*Item ${index + 1}:*
 🍰 *${item.name}*
@@ -411,19 +399,17 @@ Obrigado pela sua preferência! 😊`);
 
     window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
 
-    // Limpar o carrinho e atualizar a interface
     cart = [];
     updateCartModal();
     addressInput.value = '';
 })
 
 
-//verificar a hora e manipular o card do horario
 function checkRestaurantOpen(){
     const data = new Date();
     const hora = data.getHours();
     return hora >= 13 && hora < 20;
-    //true = restaurante
+
 }
 
 const spanItem = document.getElementById("date-spam")
@@ -437,7 +423,7 @@ if(isOpen){
     spanItem.classList.add("bg-red-500");
 }
 
-let slideIndex = 0;
+let slideIndex = 1;
 
 function showSlides() {
     let slides = document.querySelectorAll('.slide');
@@ -445,12 +431,12 @@ function showSlides() {
         slide.classList.add('hidden');
     });
 
+    slides[slideIndex - 1].classList.remove('hidden');
+
     slideIndex++;
     if (slideIndex > slides.length) {slideIndex = 1}
 
-    slides[slideIndex - 1].classList.remove('hidden');
-
-    setTimeout(showSlides, 5000); // Muda a cada 5 segundos
+    setTimeout(showSlides, 5000);
 }
 
 showSlides();
