@@ -408,7 +408,7 @@ Obrigado pela sua preferência! 😊`);
 function checkRestaurantOpen(){
     const data = new Date();
     const hora = data.getHours();
-    return hora >= 13 && hora < 20;
+    return hora >= 11 && hora < 20;
 
 }
 
